@@ -1,0 +1,43 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package libreria.persistencia;
+
+import java.util.Collection;
+import libreria.entidades.Editorial;
+
+/**
+ *
+ * @author Sebastian
+ */
+public final class EditorialDAO extends DAO{
+    public void guardarEditorial(Editorial editorial){
+        guardar(editorial);
+    }
+    
+    public void modificarEditorial(Editorial editorial){
+        modificar(editorial);
+    }
+    
+    public void darDeBajaEditorial(Integer id){
+        Editorial editorial = buscarEditorialPorId(id);
+        editorial.setAlta(false);
+        modificar(editorial);
+    }
+    
+    public Editorial buscarEditorialPorId(Integer id){
+        conectar();
+        Editorial editorial = (Editorial) em.createQuery("SELECT a FROM Editorial a WHERE a.id LIKE :id").setParameter("id", id).getSingleResult();
+        desconectar();
+        return editorial;
+    }
+    
+    public Collection<Editorial> listarEditoriales(){
+        conectar();
+        Collection<Editorial> editoriales = em.createQuery("SELECT a FROM Editorial a").getResultList();
+        desconectar();
+        return editoriales;
+    }
+}
