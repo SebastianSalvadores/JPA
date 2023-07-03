@@ -5,6 +5,8 @@
  */
 package libreria.persistencia;
 
+import java.util.Collection;
+import libreria.entidades.Autor;
 import libreria.entidades.Libro;
 
 /**
@@ -40,6 +42,12 @@ public final class LibroDAO extends DAO{
         modificar(libro);
     }
     
+    public void darDeAltaLibro(Long isbn){
+        Libro libro = buscarLibroPorIsbn(isbn);
+        libro.setAlta(true);
+        modificar(libro);
+    }
+    
     public Libro buscarLibroPorIsbn(Long isbn){
         conectar();
         Libro libro = (Libro) em.createQuery("SELECT a FROM Libro a WHERE a.isbn LIKE :isbn").setParameter("isbn", isbn).getSingleResult();
@@ -54,5 +62,18 @@ public final class LibroDAO extends DAO{
         return libro;
     }
     
+    public Collection<Libro> buscarLibroPorAutor(String nombre){
+        conectar();
+        Collection<Libro> libros = em.createQuery("SELECT a FROM Libro a WHERE a.autor.nombre LIKE :nombre").setParameter("nombre", nombre).getResultList();
+        desconectar();
+        return libros;
+    }
+    
+    public Collection<Libro> buscarLibroPorEditorial(String nombre){
+        conectar();
+        Collection<Libro> libros = em.createQuery("SELECT a FROM Libro a WHERE a.editorial.nombre LIKE :nombre").setParameter("nombre", nombre).getResultList();
+        desconectar();
+        return libros;
+    }
     
 }

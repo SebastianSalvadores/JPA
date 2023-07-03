@@ -6,6 +6,7 @@
 package libreria.persistencia;
 
 import java.util.Collection;
+import javax.persistence.NoResultException;
 import libreria.entidades.Editorial;
 
 /**
@@ -27,16 +28,26 @@ public final class EditorialDAO extends DAO{
         modificar(editorial);
     }
     
+    public void darDeAltaEditorial(Integer id){
+        Editorial editorial = buscarEditorialPorId(id);
+        editorial.setAlta(true);
+        modificar(editorial);
+    }
+    
     public Editorial buscarEditorialPorId(Integer id){
-        conectar();
-        Editorial editorial = (Editorial) em.createQuery("SELECT a FROM Editorial a WHERE a.id LIKE :id").setParameter("id", id).getSingleResult();
-        desconectar();
-        return editorial;
+        try{
+            conectar();
+            Editorial editorial = (Editorial) em.createQuery("SELECT a FROM Editorial a WHERE a.id LIKE :id").setParameter("id", id).getSingleResult();
+            desconectar();
+            return editorial;
+        }catch(NoResultException nre){
+            return null;
+        }
     }
     
     public Collection<Editorial> listarEditoriales(){
         conectar();
-        Collection<Editorial> editoriales = em.createQuery("SELECT a FROM Editorial a").getResultList();
+        Collection<Editorial> editoriales = em.createQuery("SELECT a FROM Editorial a WHERE a.alta = true").getResultList();
         desconectar();
         return editoriales;
     }

@@ -39,6 +39,26 @@ public class AutorServicio {
     
     public Autor buscarAutorPorId(int id){
         Autor autor = dao.buscarAutorPorId(id);
-        return autor;
+        if(autor != null && autor.getAlta() == true){
+            return autor;
+        }else{
+            return null;
+        }
+    }
+    
+    public void darDeBajaAutor(Integer id){
+        dao.darDeBajaAutor(id);
+    }
+    
+    public void darDeAltaAutor(Integer id){
+        dao.darDeAltaAutor(id);
+    }
+    
+    public void modificarAutor(Integer id){
+        Autor autor = buscarAutorPorId(id);
+        System.out.println("Ingrese nuevo nombre de Autor:");
+        String nombre = leer.next();
+        autor.setNombre(nombre);
+        dao.modificarAutor(autor);
     }
 }

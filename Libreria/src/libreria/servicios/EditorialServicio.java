@@ -39,7 +39,26 @@ public class EditorialServicio {
     
     public Editorial buscarEditorialPorId(int id){
         Editorial editorial = dao.buscarEditorialPorId(id);
-        return editorial;
+        if(editorial != null && editorial.getAlta() == true){
+            return editorial;
+        }else{
+            return null;
+        }
     }
     
+    public void darDeBajaEditorial(Integer id){
+        dao.darDeBajaEditorial(id);
+    }
+    
+    public void darDeAltaEditorial(Integer id){
+        dao.darDeAltaEditorial(id);
+    }
+    
+    public void modificarEditorial(Integer id){
+        Editorial editorial = buscarEditorialPorId(id);
+        System.out.println("Ingrese nuevo nombre de Editorial:");
+        String nombre = leer.next();
+        editorial.setNombre(nombre);
+        dao.modificarEditorial(editorial);
+    }
 }

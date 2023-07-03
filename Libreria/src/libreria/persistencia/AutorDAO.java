@@ -6,6 +6,7 @@
 package libreria.persistencia;
 
 import java.util.Collection;
+import javax.persistence.NoResultException;
 import libreria.entidades.Autor;
 
 /**
@@ -27,11 +28,21 @@ public final class AutorDAO extends DAO{
         modificar(autor);
     }
     
+    public void darDeAltaAutor(Integer id){
+        Autor autor = buscarAutorPorId(id);
+        autor.setAlta(true);
+        modificar(autor);
+    }
+    
     public Autor buscarAutorPorId(Integer id){
-        conectar();
-        Autor autor = (Autor) em.createQuery("SELECT a FROM Autor a WHERE a.id LIKE :id").setParameter("id", id).getSingleResult();
-        desconectar();
-        return autor;
+        try{
+            conectar();
+            Autor autor = (Autor) em.createQuery("SELECT a FROM Autor a WHERE a.id LIKE :id").setParameter("id", id).getSingleResult();
+            desconectar();
+            return autor;
+        }catch(NoResultException nre){
+            return null;
+        }
     }
     
     public Autor buscarAutorPorNombre(String nombre){
@@ -43,7 +54,7 @@ public final class AutorDAO extends DAO{
     
     public Collection<Autor> listarAutores(){
         conectar();
-        Collection<Autor> autores = em.createQuery("SELECT a FROM Autor a").getResultList();
+        Collection<Autor> autores = em.createQuery("SELECT a FROM Autor a WHERE a.alta = true").getResultList();
         desconectar();
         return autores;
     }
