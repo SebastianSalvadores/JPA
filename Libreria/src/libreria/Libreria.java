@@ -5,39 +5,46 @@
  */
 package libreria;
 
-import java.util.Collection;
-import libreria.entidades.Libro;
-import libreria.servicios.AutorServicio;
-import libreria.servicios.EditorialServicio;
-import libreria.servicios.LibroServicio;
+import java.util.Scanner;
 
-/**
- *
- * @author Sebastian
- */
 public class Libreria {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) throws Exception {
-        LibroServicio libroServicio = new LibroServicio();
-        AutorServicio autorServicio = new AutorServicio();
-        EditorialServicio editorialServicio = new EditorialServicio();
+        Scanner leer = new Scanner(System.in).useDelimiter("\n");
+        int opc = 0;
         
-//        Libro libro = libroServicio.crearLibro();
-//        autorServicio.darDeBajaAutor(2);
-//        editorialServicio.darDeBajaEditorial(1);
-//        autorServicio.darDeAltaAutor(2);
-//        editorialServicio.darDeAltaEditorial(1);
-//        Collection<Libro> libros = libroServicio.listarPorAutor();
-//        for (Libro libro : libros) {
-//            System.out.println(libro.toString());
-//        }
-//        Collection<Libro> libros = libroServicio.listarPorEditorial();
-//        for (Libro libro : libros) {
-//            System.out.println(libro.toString());
-//        }
+        do {            
+            System.out.println("Base de Datos JPA - Libreria"
+                    + "\n1. Crear/Persistir una entidad."
+                    + "\n2. Modificar una entidad."
+                    + "\n3. Dar de baja una entidad."
+                    + "\n4. Dar de alta una entidad."
+                    + "\n5. Realizar una busqueda."
+                    + "\n6. Salir");
+            System.out.println("Seleccione una opcion:");
+            opc = leer.nextInt();
+            switch (opc) {
+                case 1:
+                    Menu.opc1();
+                    break;
+                case 2:
+                    Menu.opc2();
+                    break;
+                case 3:
+                    Menu.opc3();
+                    break;
+                case 4:
+                    Menu.opc4();
+                    break;
+                case 5:
+                    Menu.opc5();
+                    break;
+                case 6:
+                    break;
+                default:
+                    System.out.println("Opcion incorrecta.");
+            }
+        } while (opc != 6);
     }
     
 }

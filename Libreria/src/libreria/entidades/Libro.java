@@ -23,9 +23,9 @@ public class Libro implements Serializable {
     private String titulo;
     private Integer anio;
     private Integer ejemplares;
-    @Column(name = "ejemplares_prestados")
+    @Column(name = "EJEMPLARES_PRESTADOS")
     private Integer ejemplaresPrestados;
-    @Column(name = "ejemplares_restantes")
+    @Column(name = "EJEMPLARES_RESTANTES")
     private Integer ejemplaresRestantes;
     private Boolean alta;
     @ManyToOne

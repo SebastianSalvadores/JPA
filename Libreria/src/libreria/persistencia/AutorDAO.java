@@ -41,20 +41,26 @@ public final class AutorDAO extends DAO{
             desconectar();
             return autor;
         }catch(NoResultException nre){
+            desconectar();
             return null;
         }
     }
     
     public Autor buscarAutorPorNombre(String nombre){
-        conectar();
-        Autor autor = (Autor) em.createQuery("SELECT a FROM Autor a WHERE a.nombre LIKE :nombre").setParameter("nombre", nombre).getSingleResult();
-        desconectar();
-        return autor;
+        try{
+            conectar();
+            Autor autor = (Autor) em.createQuery("SELECT a FROM Autor a WHERE a.nombre LIKE :nombre").setParameter("nombre", nombre).getSingleResult();
+            desconectar();
+            return autor;
+        }catch(NoResultException nre){
+            desconectar();
+            return null;
+        }
     }
     
     public Collection<Autor> listarAutores(){
         conectar();
-        Collection<Autor> autores = em.createQuery("SELECT a FROM Autor a WHERE a.alta = true").getResultList();
+        Collection<Autor> autores = em.createQuery("SELECT a FROM Autor a").getResultList();
         desconectar();
         return autores;
     }

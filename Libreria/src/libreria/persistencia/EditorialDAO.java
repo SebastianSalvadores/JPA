@@ -47,7 +47,7 @@ public final class EditorialDAO extends DAO{
     
     public Collection<Editorial> listarEditoriales(){
         conectar();
-        Collection<Editorial> editoriales = em.createQuery("SELECT a FROM Editorial a WHERE a.alta = true").getResultList();
+        Collection<Editorial> editoriales = em.createQuery("SELECT a FROM Editorial a").getResultList();
         desconectar();
         return editoriales;
     }

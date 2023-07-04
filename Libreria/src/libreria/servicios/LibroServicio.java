@@ -182,43 +182,45 @@ public class LibroServicio {
             if(!resp.equalsIgnoreCase("S") && !resp.equalsIgnoreCase("N")){
                 System.out.println("Respuesta incorrecta.");
             }else{
-                int opc;
-                do{
-                    System.out.println("Seleccione una opción:"
-                            + "\n1. Crear nuevo autor."
-                            + "\n2. Seleccionar autor existente."
-                            + "\n3. Modificar autor actual.");
-                    opc = leer.nextInt();
-                    if(opc < 1 || opc > 3){
-                        System.out.println("Opcion incorrecta.");
-                    }
-                }while(opc < 1 || opc > 3);
-                switch (opc) {
-                    case 1:
-                        Autor autor = autorServicio.crearAutor();
-                        libro.setAutor(autor);
-                        break;
-                    case 2:
-                        Autor autor1;
-                        do{
-                            Collection<Autor> autores = autorServicio.listarAutores();
-                            for (Autor aux : autores) {
-                                System.out.println(aux.toString());
-                            }
-                            System.out.println("Ingrese id del autor:");
-                            int idAutor = leer.nextInt();
-                            autor1 = autorServicio.buscarAutorPorId(idAutor);
-                            if(autor1 == null){
-                                System.out.println("El id ingresado no existe o fue dado de baja.");
-                            }else{
-                                libro.setAutor(autor1);
-                            }
-                        }while(autor1 == null);
-                        break;
-                    case 3:
-                        autorServicio.modificarAutor(libro.getAutor().getId());
-                        break;
+                if(resp.equalsIgnoreCase("S")){
+                    int opc;
+                    do{
+                        System.out.println("Seleccione una opción:"
+                                + "\n1. Crear nuevo autor."
+                                + "\n2. Seleccionar autor existente."
+                                + "\n3. Modificar autor actual.");
+                        opc = leer.nextInt();
+                        if(opc < 1 || opc > 3){
+                            System.out.println("Opcion incorrecta.");
+                        }
+                    }while(opc < 1 || opc > 3);
+                    switch (opc) {
+                        case 1:
+                            Autor autor = autorServicio.crearAutor();
+                            libro.setAutor(autor);
+                            break;
+                        case 2:
+                            Autor autor1;
+                            do{
+                                Collection<Autor> autores = autorServicio.listarAutores();
+                                for (Autor aux : autores) {
+                                    System.out.println(aux.toString());
+                                }
+                                System.out.println("Ingrese id del autor:");
+                                int idAutor = leer.nextInt();
+                                autor1 = autorServicio.buscarAutorPorId(idAutor);
+                                if(autor1 == null){
+                                    System.out.println("El id ingresado no existe o fue dado de baja.");
+                                }else{
+                                    libro.setAutor(autor1);
+                                }
+                            }while(autor1 == null);
+                            break;
+                        case 3:
+                            autorServicio.modificarAutor(libro.getAutor().getId());
+                            break;
 
+                    }
                 }
             }
         }while(!resp.equalsIgnoreCase("S") && !resp.equalsIgnoreCase("N"));
@@ -228,43 +230,45 @@ public class LibroServicio {
             if(!resp.equalsIgnoreCase("S") && !resp.equalsIgnoreCase("N")){
                 System.out.println("Respuesta incorrecta.");
             }else{
-                int opc;
-                do {            
-                    System.out.println("Seleccione una opcion:"
-                            + "\n1. Crear nueva editorial."
-                            + "\n2. Seleccionar editorial existente."
-                            + "\n3. Modificar editorial actual.");
-                    opc = leer.nextInt();
-                    if(opc < 1 || opc > 3){
-                        System.out.println("Opcion incorrecta.");
+                if(resp.equalsIgnoreCase("S")){
+                    int opc;
+                    do {            
+                        System.out.println("Seleccione una opcion:"
+                                + "\n1. Crear nueva editorial."
+                                + "\n2. Seleccionar editorial existente."
+                                + "\n3. Modificar editorial actual.");
+                        opc = leer.nextInt();
+                        if(opc < 1 || opc > 3){
+                            System.out.println("Opcion incorrecta.");
+                        }
+                    } while (opc < 1 || opc > 3);
+                    switch (opc) {
+                        case 1:
+                            Editorial editorial = editorialServicio.crearEditorial();
+                            libro.setEditorial(editorial);
+                            break;
+                        case 2:
+                            Editorial editorial1;
+                            do{
+                                Collection<Editorial> editoriales = editorialServicio.listarEditoriales();
+                                for (Editorial aux : editoriales) {
+                                    System.out.println(aux.toString());
+                                }
+                                System.out.println("Ingrese id de la Editorial:");
+                                int idEditorial = leer.nextInt();
+                                editorial1 = editorialServicio.buscarEditorialPorId(idEditorial);
+                                if(editorial1 == null){
+                                    System.out.println("El id ingresado no existe o fue dado de baja.");
+                                }else{
+                                    libro.setEditorial(editorial1);
+                                }
+                            }while(editorial1 == null);
+                            break;
+                        case 3:
+                            editorialServicio.modificarEditorial(libro.getEditorial().getId());
+                            break;
+
                     }
-                } while (opc < 1 || opc > 3);
-                switch (opc) {
-                    case 1:
-                        Editorial editorial = editorialServicio.crearEditorial();
-                        libro.setEditorial(editorial);
-                        break;
-                    case 2:
-                        Editorial editorial1;
-                        do{
-                            Collection<Editorial> editoriales = editorialServicio.listarEditoriales();
-                            for (Editorial aux : editoriales) {
-                                System.out.println(aux.toString());
-                            }
-                            System.out.println("Ingrese id de la Editorial:");
-                            int idEditorial = leer.nextInt();
-                            editorial1 = editorialServicio.buscarEditorialPorId(idEditorial);
-                            if(editorial1 == null){
-                                System.out.println("El id ingresado no existe o fue dado de baja.");
-                            }else{
-                                libro.setEditorial(editorial1);
-                            }
-                        }while(editorial1 == null);
-                        break;
-                    case 3:
-                        editorialServicio.modificarEditorial(libro.getEditorial().getId());
-                        break;
-                        
                 }
             }
         } while (!resp.equalsIgnoreCase("S") && !resp.equalsIgnoreCase("N"));
@@ -312,5 +316,20 @@ public class LibroServicio {
             }
         }while(editorial == null);
         return libros;
+    }
+    
+    public Collection<Libro> listarLibros(){
+        Collection<Libro> libros = dao.listarLibros();
+        return libros;
+    }
+    
+    public Libro buscarLibroPorTitulo(String titulo){
+        Libro libro = dao.buscarLibroPorTitulo(titulo);
+        return libro;
+    }
+    
+    public Libro buscarLibroPorIsbn(Long isbn){
+        Libro libro = dao.buscarLibroPorIsbn(isbn);
+        return libro;
     }
 }

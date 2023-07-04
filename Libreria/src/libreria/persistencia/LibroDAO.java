@@ -6,6 +6,7 @@
 package libreria.persistencia;
 
 import java.util.Collection;
+import javax.persistence.NoResultException;
 import libreria.entidades.Autor;
 import libreria.entidades.Libro;
 
@@ -49,17 +50,27 @@ public final class LibroDAO extends DAO{
     }
     
     public Libro buscarLibroPorIsbn(Long isbn){
-        conectar();
-        Libro libro = (Libro) em.createQuery("SELECT a FROM Libro a WHERE a.isbn LIKE :isbn").setParameter("isbn", isbn).getSingleResult();
-        desconectar();
-        return libro;
+        try{
+            conectar();
+            Libro libro = (Libro) em.createQuery("SELECT a FROM Libro a WHERE a.isbn LIKE :isbn").setParameter("isbn", isbn).getSingleResult();
+            desconectar();
+            return libro;
+        }catch(NoResultException nre){
+            desconectar();
+            return null;
+        }
     }
     
     public Libro buscarLibroPorTitulo(String titulo){
-        conectar();
-        Libro libro = (Libro) em.createQuery("SELECT a FROM Libro a WHERE a.titulo LIKE :titulo").setParameter("titulo", titulo).getSingleResult();
-        desconectar();
-        return libro;
+        try{
+            conectar();
+            Libro libro = (Libro) em.createQuery("SELECT a FROM Libro a WHERE a.titulo LIKE :titulo").setParameter("titulo", titulo).getSingleResult();
+            desconectar();
+            return libro;
+        }catch(NoResultException nre){
+            desconectar();
+            return null;
+        }
     }
     
     public Collection<Libro> buscarLibroPorAutor(String nombre){
@@ -72,6 +83,13 @@ public final class LibroDAO extends DAO{
     public Collection<Libro> buscarLibroPorEditorial(String nombre){
         conectar();
         Collection<Libro> libros = em.createQuery("SELECT a FROM Libro a WHERE a.editorial.nombre LIKE :nombre").setParameter("nombre", nombre).getResultList();
+        desconectar();
+        return libros;
+    }
+    
+    public Collection<Libro> listarLibros(){
+        conectar();
+        Collection<Libro> libros = em.createQuery("SELECT l FROM Libro l").getResultList();
         desconectar();
         return libros;
     }

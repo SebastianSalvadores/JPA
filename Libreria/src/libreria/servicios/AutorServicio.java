@@ -46,6 +46,15 @@ public class AutorServicio {
         }
     }
     
+    public Autor buscarAutorPorNombre(String nombre){
+        Autor autor = dao.buscarAutorPorNombre(nombre);
+        if(autor != null){
+            return autor;
+        }else{
+            return null;
+        }
+    }
+    
     public void darDeBajaAutor(Integer id){
         dao.darDeBajaAutor(id);
     }
