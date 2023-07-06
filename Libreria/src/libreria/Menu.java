@@ -11,8 +11,10 @@ import libreria.entidades.Autor;
 import libreria.entidades.Editorial;
 import libreria.entidades.Libro;
 import libreria.servicios.AutorServicio;
+import libreria.servicios.ClienteServicio;
 import libreria.servicios.EditorialServicio;
 import libreria.servicios.LibroServicio;
+import libreria.servicios.PrestamoServicio;
 
 /**
  *
@@ -23,31 +25,41 @@ public class Menu {
     public static LibroServicio libroServicio = new LibroServicio();
     public static AutorServicio autorServicio = new AutorServicio();
     public static EditorialServicio editorialServicio = new EditorialServicio();
+    public static ClienteServicio clienteServicio = new ClienteServicio();
+    public static PrestamoServicio prestamoServicio = new PrestamoServicio();
         
     public static void opc1() throws Exception{
         int opc = 0;
         do {            
-            System.out.println("1. Crear libro"
-                    + "\n2. Crear Autor"
-                    + "\n3. Crear Editorial"
-                    + "\n4. Volver al menu principal");
+            System.out.println("1. Crear Prestamo"
+                    + "\n2. Crear Cliente"
+                    + "\n3. Crear Libro"
+                    + "\n4. Crear Autor"
+                    + "\n5. Crear Editorial"
+                    + "\n6. Volver al menu principal");
             opc = leer.nextInt();
             switch (opc) {
                 case 1:
-                    libroServicio.crearLibro();
+                    prestamoServicio.crearPrestamo();
                     break;
                 case 2:
-                    autorServicio.crearAutor();
+                    clienteServicio.crearCliente();
                     break;
                 case 3:
-                    editorialServicio.crearEditorial();
+                    libroServicio.crearLibro();
                     break;
                 case 4:
+                    autorServicio.crearAutor();
+                    break;
+                case 5:
+                    editorialServicio.crearEditorial();
+                    break;
+                case 6:
                     break;
                 default:
                     System.out.println("Opcion incorrecta.");
             }
-        } while (opc != 4);
+        } while (opc != 6);
         
     }
     
