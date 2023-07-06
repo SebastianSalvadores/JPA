@@ -69,7 +69,8 @@ public class Menu {
             System.out.println("1. Modificar libro"
                     + "\n2. Modificar Autor"
                     + "\n3. Modificar Editorial"
-                    + "\n4. Volver al menu principal");
+                    + "\n4. Modificar Cliente"
+                    + "\n5. Volver al menu principal");
             opc = leer.nextInt();
             switch (opc) {
                 case 1:
@@ -100,11 +101,14 @@ public class Menu {
                     editorialServicio.modificarEditorial(idEditorial);
                     break;
                 case 4:
+                    clienteServicio.modificarCliente();
+                    break;
+                case 5:
                     break;
                 default:
                     System.out.println("Opcion incorrecta.");
             }
-        } while (opc != 4);
+        } while (opc != 5);
     }
     
     public static void opc3() throws Exception{
