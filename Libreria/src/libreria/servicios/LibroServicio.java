@@ -332,4 +332,8 @@ public class LibroServicio {
         Libro libro = dao.buscarLibroPorIsbn(isbn);
         return libro;
     }
+    
+    public void actualizarPrestamosLibro(Libro libro) throws Exception{
+        dao.modificarLibro(libro);
+    }
 }

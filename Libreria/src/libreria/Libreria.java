@@ -16,7 +16,7 @@ public class Libreria {
         do {            
             System.out.println("Base de Datos JPA - Libreria"
                     + "\n1. Crear/Persistir una entidad."
-                    + "\n2. Modificar una entidad."
+                    + "\n2. Devolver libro/Modificar una entidad."
                     + "\n3. Dar de baja una entidad."
                     + "\n4. Dar de alta una entidad."
                     + "\n5. Realizar una busqueda."

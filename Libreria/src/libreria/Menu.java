@@ -8,8 +8,10 @@ package libreria;
 import java.util.Collection;
 import java.util.Scanner;
 import libreria.entidades.Autor;
+import libreria.entidades.Cliente;
 import libreria.entidades.Editorial;
 import libreria.entidades.Libro;
+import libreria.entidades.Prestamo;
 import libreria.servicios.AutorServicio;
 import libreria.servicios.ClienteServicio;
 import libreria.servicios.EditorialServicio;
@@ -66,14 +68,18 @@ public class Menu {
     public static void opc2() throws Exception{
         int opc = 0;
         do {            
-            System.out.println("1. Modificar libro"
-                    + "\n2. Modificar Autor"
-                    + "\n3. Modificar Editorial"
-                    + "\n4. Modificar Cliente"
-                    + "\n5. Volver al menu principal");
+            System.out.println("1. Devolver libro"
+                    + "\n2. Modificar libro"
+                    + "\n3. Modificar Autor"
+                    + "\n4. Modificar Editorial"
+                    + "\n5. Modificar Cliente"
+                    + "\n6. Volver al menu principal");
             opc = leer.nextInt();
             switch (opc) {
                 case 1:
+                    prestamoServicio.devolverLibro();
+                    break;
+                case 2:
                     Collection<Libro> libros = libroServicio.listarLibros();
                     for (Libro libro : libros) {
                         System.out.println(libro.toString());
@@ -82,7 +88,7 @@ public class Menu {
                     Long isbn = leer.nextLong();
                     libroServicio.modificarLibro(isbn);
                     break;
-                case 2:
+                case 3:
                     Collection<Autor> autores = autorServicio.listarAutores();
                     for (Autor autor : autores) {
                         System.out.println(autor.toString());
@@ -91,7 +97,7 @@ public class Menu {
                     Integer idAutor = leer.nextInt();
                     autorServicio.modificarAutor(idAutor);
                     break;
-                case 3:
+                case 4:
                     Collection<Editorial> editoriales = editorialServicio.listarEditoriales();
                     for (Editorial editorial : editoriales) {
                         System.out.println(editorial.toString());
@@ -100,15 +106,15 @@ public class Menu {
                     Integer idEditorial = leer.nextInt();
                     editorialServicio.modificarEditorial(idEditorial);
                     break;
-                case 4:
+                case 5:
                     clienteServicio.modificarCliente();
                     break;
-                case 5:
+                case 6:
                     break;
                 default:
                     System.out.println("Opcion incorrecta.");
             }
-        } while (opc != 5);
+        } while (opc != 6);
     }
     
     public static void opc3() throws Exception{
@@ -208,7 +214,8 @@ public class Menu {
                     + "\n3. Buscar un libro por ISBN"
                     + "\n4. Buscar un libro/s por nombre de autor"
                     + "\n5. Buscar un libro/s por nombre de editorial"
-                    + "\n6. Volver al menu principal");
+                    + "\n6. Buscar prestamo/s por cliente"
+                    + "\n7. Volver al menu principal");
             opc = leer.nextInt();
             switch (opc) {
                 case 1:
@@ -253,9 +260,34 @@ public class Menu {
                         System.out.println(libroEditorial.toString());
                     }
                     break;
+                case 6:
+                    Collection<Cliente> clientes = clienteServicio.listarClientes();
+                    for (Cliente aux : clientes) {
+                        if(aux.getAlta()){
+                            System.out.println(aux.toString());
+                        }
+                    }
+                    Cliente cliente;
+                    Integer idCliente;
+                    do{
+                        System.out.println("Ingrese id del cliente:");
+                        idCliente = leer.nextInt();
+                        cliente = clienteServicio.buscarClientePorId(idCliente);
+                        if(cliente == null || cliente.getAlta() == false){
+                            System.out.println("El cliente no fue encontrado.");
+                        }
+                    }while(cliente == null);
+                    
+                    Collection<Prestamo> prestamos = prestamoServicio.listarPrestamosPorCliente(idCliente);
+                    for (Prestamo prestamo : prestamos) {
+                        System.out.println(prestamo.toString());
+                    }
+                    break;
+                case 7:
+                    break;
                 default:
                     System.out.println("Opcion incorrecta.");
             }
-        } while (opc != 6);
+        } while (opc != 7);
     }
 }

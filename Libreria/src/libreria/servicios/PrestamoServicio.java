@@ -30,7 +30,7 @@ public class PrestamoServicio {
         clienteServicio = new ClienteServicio();
     }
     
-    public Prestamo crearPrestamo(){
+    public Prestamo crearPrestamo() throws Exception{
         
         Prestamo prestamo = new Prestamo();
         int opc = 0;
@@ -60,30 +60,6 @@ public class PrestamoServicio {
         prestamo.setFechaPrestamo(fechaPrestamo);
         
         LocalDate fechaDevolucion = null;
-        do {            
-            System.out.println("Seleccione fecha de devolucion:"
-                    + "1. Calcular por cantidad de dias."
-                    + "2. Ingresar fecha manualmente.");
-            opc = leer.nextInt();
-            switch (opc) {
-                case 1:
-                    System.out.println("Ingrese cantidad de dias que dura el prestamo:");
-                    int dias = leer.nextInt();
-                    fechaDevolucion = prestamo.getFechaPrestamo().plusDays(dias);
-                    break;
-                case 2:
-                    System.out.println("Ingrese dia:");
-                    int dia = leer.nextInt();
-                    System.out.println("Ingrese mes:");
-                    int mes = leer.nextInt();
-                    System.out.println("Ingrese año:");
-                    int anio = leer.nextInt();
-                    fechaDevolucion = LocalDate.of(anio, mes, dia);
-                    break;
-                default:
-                    System.out.println("Opcion incorrecta.");
-            }
-        } while (opc != 1 && opc != 2);
         prestamo.setFechaDevolucion(fechaDevolucion);
         
         Collection<Libro> libros = libroServicio.listarLibros();
@@ -111,6 +87,7 @@ public class PrestamoServicio {
                 ejemplaresRestantes--;
                 libro.setEjemplaresPrestados(ejemplaresPrestados);
                 libro.setEjemplaresRestantes(ejemplaresRestantes);
+                libroServicio.actualizarPrestamosLibro(libro);
                 validacionPrestamo = true;
             }
         }while(validacionPrestamo == false);
@@ -152,6 +129,74 @@ public class PrestamoServicio {
         return prestamo;
     }
     
+    public void devolverLibro() throws Exception{
+        Collection<Prestamo> prestamos = dao.listarPrestamos();
+        for (Prestamo prestamo : prestamos) {
+            if(prestamo.getAlta()){
+                System.out.println(prestamo.toString());
+            }
+        }
+        Prestamo prestamo;
+        do{
+            System.out.println("Ingrese id del prestamo a devolver:");
+            Integer id = leer.nextInt();
+            prestamo = dao.buscarPrestamoPorId(id);
+            if(prestamo == null || prestamo.getAlta() == false){
+                System.out.println("El id ingresado no existe o fue dado de baja.");
+            }
+        }while(prestamo == null || prestamo.getAlta() == false);
+        
+        Libro libro = prestamo.getLibro();
+        int ejemplaresPrestados = libro.getEjemplaresPrestados();
+        int ejemplaresRestantes = libro.getEjemplaresRestantes();
+        LocalDate fechaDevolucion = null;
+        if(ejemplaresPrestados > 0){
+            ejemplaresPrestados--;
+            libro.setEjemplaresPrestados(ejemplaresPrestados);
+            ejemplaresRestantes++;
+            libro.setEjemplaresRestantes(ejemplaresRestantes);
+            libroServicio.actualizarPrestamosLibro(libro);
+            int opc;
+            do {            
+                System.out.println("Seleccione fecha de devolucion:"
+                        + "\n1. Ingresar fecha de hoy"
+                        + "\n2. Calcular por duracion del prestamo en dias."
+                        + "\n3. Ingresar fecha manualmente.");
+                opc = leer.nextInt();
+                switch (opc) {
+                    case 1:
+                        fechaDevolucion = LocalDate.now();
+                        break;
+                    case 2:
+                        System.out.println("Ingrese cantidad de dias que duró el prestamo:");
+                        int dias = leer.nextInt();
+                        fechaDevolucion = prestamo.getFechaPrestamo().plusDays(dias);
+                        break;
+                    case 3:
+                        System.out.println("Ingrese dia:");
+                        int dia = leer.nextInt();
+                        System.out.println("Ingrese mes:");
+                        int mes = leer.nextInt();
+                        System.out.println("Ingrese año:");
+                        int anio = leer.nextInt();
+                        fechaDevolucion = LocalDate.of(anio, mes, dia);
+                        break;
+                    default:
+                        System.out.println("Opcion incorrecta.");
+                }
+            } while (opc != 1 && opc != 2 && opc != 3);
+            
+            prestamo.setFechaDevolucion(fechaDevolucion);
+            dao.modificarPrestamo(prestamo);
+            
+            dao.darDeBajaPrestamo(prestamo);
+        }else{
+            System.out.println("Error. No se puede devolver libro. (No quedan ejemplares prestados)");
+        }
+    }
     
-    
+    public Collection<Prestamo> listarPrestamosPorCliente(Integer idCliente){
+        Collection<Prestamo> prestamos = dao.buscarPrestamosPorCliente(idCliente);
+        return prestamos;
+    }
 }
